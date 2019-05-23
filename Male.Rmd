@@ -1,0 +1,85 @@
+---
+title: "Aides Drug_Male"
+author: "Corie Christianson"
+date: "May 16, 2019"
+output: html_document
+---
+
+```{r include=FALSE,echo=FALSE}
+require(tidyverse)
+require(tigerstats)
+avast <-read.csv(file="avastivironal.csv",header=TRUE)
+male <-filter (avast, sex== "M")
+```
+
+
+# Introduction
+
+<!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
+
+A new  preventative aides (abacavirinol) is under test in clinical trials. We are analyzing the effectiveness of this drug for females. We are considering the male population. We obtained data from avast, which consists of six variables: x, treatment, sex, infected, Ivdrug, and LBGT. 
+
+# Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+
+The methods used in this experiment were Pearson's Chi-squared test with Yates' continuity correction,  Fisher's Exact Test for Count Data, and barcharts for graphical descriptive results.
+
+#Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+## Descriptive Results
+
+### Graphical Descriptive Results
+
+<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
+
+```{r}
+barchartGC(~infected+treatment,  data=male, type = "percent") 
+```
+
+
+According to the barchart, the males who received the drug in this study had a lower percentage of likelihood of them being infected with aids. About only 30% of males taking the drug became infected with aids, whereas about 50% of males taking the placebo became infected with aids. This proves that the drug is effective for males. 
+
+### Numerical Descriptive Results
+
+<!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+We get row and column percents
+```{r}
+mytab <- xtabs(~infected+treatment, data=male)
+rowPerc(mytab)
+colPerc(mytab)
+```
+
+According to the row and column percent test, the men who took the drug were 31.42% likely to become infected with aids and the men who did not take the drug were 50.38% likely to become infected. The men had a higher chance of becoming infected if they received the placebo. 
+
+## Inferential Results
+
+<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+We assume the null hypothesis in this case
+
+$H_0$ : There is a relationship between being a male and the positive effectiveness of the drug.
+
+$H_A$ : There is no relationship between being a male and the positive effectiveness of the drug.
+
+```{r}
+chisqtestGC(~infected+treatment, data=male)
+fisher.test(mytab)
+```
+
+
+We accept the null hypothesis in this case because there is a relationship between being male and the drug being effective. According to the Chi-Squared Test the counts expected by the null were that the males taking the drug would be less likely to become infected with aids than those that were taking the placebo. This was proven correct because when the study was done only 213 men who took the drug became infected and 465 men who took the placebo became infected. 
+
+According to the Fisher's Exact Test the odds ratio of a male taking the drug and getting aids is 0.45. Therefore they have about half a chance of getting aids over those taking the placebo.
+
+
+# Discussion and Conclusion
+
+<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+
+In this study we observed the statistical odds of getting aids for men who took the new drug. The relationship between being male and taking the drug had a positive effect on the observed volunteers. Those who took the drug were less likely to become infected with aids than those who took the placebo. This study proves that this drug is effective for males to take in order to become immune from aids. 
+
